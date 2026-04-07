@@ -5,7 +5,8 @@ export default function Home() {
   const [peso, setPeso] = useState("");
   const [altura, setAltura] = useState("");
   const [edad, setEdad] = useState("");
-  const [resultado, setResultado] = useState("");
+  const [objetivo, setObjetivo] = useState("mantener");
+  const [resultado, setResultado] = useState<any>(null);
 
   const calcular = () => {
     const h = Number(altura) / 100;
@@ -20,60 +21,44 @@ export default function Home() {
     let calorias =
       10 * Number(peso) + 6.25 * Number(altura) - 5 * Number(edad) + 5;
 
-    setResultado(
-      `IMC: ${imc.toFixed(2)} (${estado}) | ${Math.round(calorias)} kcal`
-    );
+    if (objetivo === "bajar") calorias -= 300;
+    if (objetivo === "subir") calorias += 300;
+
+    setResultado({
+      imc: imc.toFixed(2),
+      estado,
+      calorias: Math.round(calorias),
+    });
   };
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      background: "linear-gradient(135deg, #0f172a, #1e293b)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      color: "white"
-    }}>
-      <div style={{
-        background: "#111827",
-        padding: 30,
-        borderRadius: 20,
-        width: 300,
-        boxShadow: "0 10px 30px rgba(0,0,0,0.5)"
-      }}>
-        <h1 style={{ textAlign: "center", marginBottom: 20 }}>
-          Fitness Calculator
-        </h1>
+    <div style={container}>
+      <div style={card}>
+        <h1 style={title}>Fitness Calculator PRO</h1>
 
-        <input
-          placeholder="Peso (kg)"
-          onChange={(e) => setPeso(e.target.value)}
-          style={input}
-        />
-        <input
-          placeholder="Altura (cm)"
-          onChange={(e) => setAltura(e.target.value)}
-          style={input}
-        />
-        <input
-          placeholder="Edad"
-          onChange={(e) => setEdad(e.target.value)}
-          style={input}
-        />
+        <input placeholder="Peso (kg)" onChange={(e) => setPeso(e.target.value)} style={input}/>
+        <input placeholder="Altura (cm)" onChange={(e) => setAltura(e.target.value)} style={input}/>
+        <input placeholder="Edad" onChange={(e) => setEdad(e.target.value)} style={input}/>
+
+        <select onChange={(e) => setObjetivo(e.target.value)} style={input}>
+          <option value="mantener">Mantener</option>
+          <option value="bajar">Bajar grasa</option>
+          <option value="subir">Subir masa</option>
+        </select>
 
         <button onClick={calcular} style={button}>
           Calcular
         </button>
 
         {resultado && (
-          <div style={{
-            marginTop: 20,
-            padding: 15,
-            background: "#1f2937",
-            borderRadius: 10,
-            textAlign: "center"
-          }}>
-            {resultado}
+          <div style={resultBox}>
+            <h2>IMC: {resultado.imc}</h2>
+            <p>{resultado.estado}</p>
+            <p>{resultado.calorias} kcal / día</p>
+
+            <button style={proButton}>
+              Desbloquear Plan PRO
+            </button>
           </div>
         )}
       </div>
@@ -81,12 +66,35 @@ export default function Home() {
   );
 }
 
+// 🎨 ESTILOS PRO
+const container = {
+  minHeight: "100vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  background: "linear-gradient(135deg, #0f172a, #020617)",
+};
+
+const card = {
+  background: "#0f172a",
+  padding: 30,
+  borderRadius: 20,
+  width: 320,
+  boxShadow: "0 20px 50px rgba(0,0,0,0.6)",
+  textAlign: "center",
+};
+
+const title = {
+  color: "white",
+  marginBottom: 20,
+};
+
 const input = {
   width: "100%",
-  padding: 10,
+  padding: 12,
   marginBottom: 10,
-  borderRadius: 8,
-  border: "none"
+  borderRadius: 10,
+  border: "none",
 };
 
 const button = {
@@ -97,5 +105,24 @@ const button = {
   background: "#22c55e",
   color: "black",
   fontWeight: "bold",
-  cursor: "pointer"
+  cursor: "pointer",
+};
+
+const resultBox = {
+  marginTop: 20,
+  padding: 15,
+  background: "#020617",
+  borderRadius: 10,
+  color: "white",
+};
+
+const proButton = {
+  marginTop: 10,
+  padding: 10,
+  width: "100%",
+  background: "#f59e0b",
+  border: "none",
+  borderRadius: 8,
+  fontWeight: "bold",
+  cursor: "pointer",
 };
