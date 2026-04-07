@@ -6,7 +6,11 @@ export default function Home() {
   const [altura, setAltura] = useState("");
   const [edad, setEdad] = useState("");
   const [objetivo, setObjetivo] = useState("mantener");
-  const [resultado, setResultado] = useState<any>(null);
+  const [resultado, setResultado] = useState<{
+    imc: string;
+    estado: string;
+    calorias: number;
+  } | null>(null);
 
   const calcular = () => {
     const h = Number(altura) / 100;
@@ -36,11 +40,27 @@ export default function Home() {
       <div style={card}>
         <h1 style={title}>Fitness Calculator PRO</h1>
 
-        <input placeholder="Peso (kg)" onChange={(e) => setPeso(e.target.value)} style={input}/>
-        <input placeholder="Altura (cm)" onChange={(e) => setAltura(e.target.value)} style={input}/>
-        <input placeholder="Edad" onChange={(e) => setEdad(e.target.value)} style={input}/>
+        <input
+          placeholder="Peso (kg)"
+          onChange={(e) => setPeso(e.target.value)}
+          style={input}
+        />
+        <input
+          placeholder="Altura (cm)"
+          onChange={(e) => setAltura(e.target.value)}
+          style={input}
+        />
+        <input
+          placeholder="Edad"
+          onChange={(e) => setEdad(e.target.value)}
+          style={input}
+        />
 
-        <select onChange={(e) => setObjetivo(e.target.value)} style={input}>
+        <select
+          onChange={(e) => setObjetivo(e.target.value)}
+          style={input}
+          value={objetivo}
+        >
           <option value="mantener">Mantener</option>
           <option value="bajar">Bajar grasa</option>
           <option value="subir">Subir masa</option>
@@ -56,9 +76,7 @@ export default function Home() {
             <p>{resultado.estado}</p>
             <p>{resultado.calorias} kcal / día</p>
 
-            <button style={proButton}>
-              Desbloquear Plan PRO
-            </button>
+            <button style={proButton}>Desbloquear Plan PRO</button>
           </div>
         )}
       </div>
@@ -66,8 +84,8 @@ export default function Home() {
   );
 }
 
-// 🎨 ESTILOS PRO
-const container = {
+// 🎨 ESTILOS TIPADOS
+const container: React.CSSProperties = {
   minHeight: "100vh",
   display: "flex",
   justifyContent: "center",
@@ -75,7 +93,7 @@ const container = {
   background: "linear-gradient(135deg, #0f172a, #020617)",
 };
 
-const card = {
+const card: React.CSSProperties = {
   background: "#0f172a",
   padding: 30,
   borderRadius: 20,
@@ -84,12 +102,12 @@ const card = {
   textAlign: "center",
 };
 
-const title = {
+const title: React.CSSProperties = {
   color: "white",
   marginBottom: 20,
 };
 
-const input = {
+const input: React.CSSProperties = {
   width: "100%",
   padding: 12,
   marginBottom: 10,
@@ -97,7 +115,7 @@ const input = {
   border: "none",
 };
 
-const button = {
+const button: React.CSSProperties = {
   width: "100%",
   padding: 12,
   borderRadius: 10,
@@ -108,7 +126,7 @@ const button = {
   cursor: "pointer",
 };
 
-const resultBox = {
+const resultBox: React.CSSProperties = {
   marginTop: 20,
   padding: 15,
   background: "#020617",
@@ -116,7 +134,7 @@ const resultBox = {
   color: "white",
 };
 
-const proButton = {
+const proButton: React.CSSProperties = {
   marginTop: 10,
   padding: 10,
   width: "100%",
